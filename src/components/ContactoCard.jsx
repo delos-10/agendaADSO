@@ -1,59 +1,50 @@
-// export default function ContactoCard({ nombre, telefono, correo, etiqueta, onEliminar }) {
-//   return (
-//     <article className="tarjeta-contacto">
-//       <h3>{nombre}</h3>
-//       <p>📞 {telefono}</p>
-//       <p>✉️ {correo}</p>
-//       {etiqueta && <p>{etiqueta}</p>}
-//       <div className="acciones">
-//         <button className="btn-eliminar" onClick={() => onEliminar(correo)}>
-//           Eliminar
-//         </button>
-//       </div>
-//     </article>
-//   );
-// }
-
 // src/components/ContactoCard.jsx
 export default function ContactoCard({
- nombre,
- telefono,
- correo,
- empresa,
- etiqueta,
- onEliminar
+  id,
+  nombre,
+  telefono,
+  correo,
+  empresa,
+  etiqueta,
+  onEliminar,
 }) {
- return (
- <article className="bg-white border border-gray-200 rounded-xl shadow-sm p-5">
- {/* Nombre destacado */}
- <h3 className="text-xl font-bold text-gray-900 mb-3">
- {nombre}
- </h3>
- {/* Teléfono */}
-    <p className="text-gray-700 mb-1">📞
-  {telefono} </p>
-    <p className="text-gray-700 mb-1">📧
-  {correo}</p>
-{empresa && (
-        <p className="text-sm text-gray-600 mb-2">
-          🏢 {empresa}
+  return (
+    <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+      {/* Encabezado de la tarjeta (Nombre + Etiqueta + Botón Eliminar) */}
+      <div className="flex justify-between items-start">
+        <div>
+          <h3 className="text-xl font-bold text-gray-800">{nombre}</h3>
+          
+          {etiqueta && (
+            <span className="inline-block bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm mt-2 font-medium">
+              {etiqueta}
+            </span>
+          )}
+        </div>
+
+        {/* Botón de eliminar pasando el ID de JSON Server */}
+        <button
+          onClick={() => onEliminar(id)}
+          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors"
+        >
+          Eliminar
+        </button>
+      </div>
+
+      {/* Detalles del contacto */}
+      <div className="mt-4 space-y-2">
+        <p className="text-gray-600 flex items-center gap-2">
+          📞 <span>{telefono}</span>
         </p>
-      )}
-{etiqueta && (
-        <p className="text-gray-700 mb-3">
-          🏷️ {etiqueta}
+        <p className="text-gray-600 flex items-center gap-2">
+          📧 <span>{correo}</span>
         </p>
-      )}
-  {/* Acciones (alineado a la izquierda en móvil) */}
- <div className="flex justify-start">
- <button
- onClick={() => onEliminar(correo)}
- className="bg-red-500 hover:bg-red-600 text-white text-sm font-medium
-px-4 py-2 rounded-lg transition-colors"
- >
- Eliminar
- </button>
- </div>
- </article>
- );
+        {empresa && (
+          <p className="text-gray-500 text-sm flex items-center gap-2">
+            🏢 <span>{empresa}</span>
+          </p>
+        )}
+      </div>
+    </div>
+  );
 }
