@@ -1,12 +1,19 @@
 {
   "contactos": [
     {
-      "nombre": "Juan Mendez",
-      "telefono": "3247689065",
-      "correo": "juan@gmail.com",
-      "empresa": "tesla",
-      "etiqueta": "Empresario",
-      "id": "-OTcwe_D4sw"
+      "nombre": "Isabella Arenas",
+      "telefono": "3114058272",
+      "correo": "isis@gmail.com",
+      "etiqueta": "Billonaria",
+      "id": "P-Sb4Z2M-c4"
+    },
+    {
+      "nombre": "David Rojas",
+      "telefono": "3008765432",
+      "correo": "rojas@gmail.com",
+      "etiqueta": "coordinador",
+      "id": "OZfFPfL3eqc"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
