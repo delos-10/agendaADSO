@@ -13,6 +13,13 @@
       "correo": "rojas@gmail.com",
       "etiqueta": "coordinador",
       "id": "OZfFPfL3eqc"
+    },
+    {
+      "nombre": "Juan Mendez",
+      "telefono": "3247689065",
+      "correo": "juan@gmail.com",
+      "etiqueta": "Empresario",
+      "id": "S76qVijFuKs"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
