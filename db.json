@@ -20,6 +20,20 @@
       "correo": "juan@gmail.com",
       "etiqueta": "Empresario",
       "id": "S76qVijFuKs"
+    },
+    {
+      "nombre": "Daniela Zoto",
+      "telefono": "3235189876",
+      "correo": "zoto@gmail.com",
+      "etiqueta": "profesora",
+      "id": "W1718gucA4o"
+    },
+    {
+      "nombre": "Keiner Mejia",
+      "telefono": "3204668769",
+      "correo": "keiner@gmail.com",
+      "etiqueta": "Abogado",
+      "id": "hC2L6rRgnTA"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
