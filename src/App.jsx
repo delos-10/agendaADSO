@@ -2,7 +2,7 @@
 // Componente principal de la aplicación Agenda ADSO.
 // Se encarga de:
 // - Cargar contactos desde la API.
-// - Agregar y eliminar contactos.
+// - Agregar, editar y eliminar contactos.
 // - Buscar contactos por nombre, correo, etiqueta y teléfono.
 // - Ordenar los contactos alfabéticamente.
 // - Mostrar la cantidad de contactos encontrados.
@@ -15,6 +15,7 @@ import {
   listarContactos,
   crearContacto,
   eliminarContactoPorId,
+  actualizarContacto,
 } from "./api";
 
 // Importamos la configuración global
@@ -34,9 +35,7 @@ function App() {
   // Estado para guardar mensajes de error
   const [error, setError] = useState("");
 
-
   // CLASE 10: ESTADOS PARA BÚSQUEDA Y ORDEN
- 
 
   // Guarda el texto escrito en el buscador
   const [busqueda, setBusqueda] = useState("");
@@ -45,9 +44,13 @@ function App() {
   // false = orden Z-A
   const [ordenAsc, setOrdenAsc] = useState(true);
 
-  
+  // CLASE 11: ESTADO PARA EDITAR CONTACTOS
+
+  // Guarda el contacto que se está editando.
+  // Si es null, el formulario está en modo crear.
+  const [contactoEnEdicion, setContactoEnEdicion] = useState(null);
+
   // CARGAR CONTACTOS
- 
 
   useEffect(() => {
     const cargarContactos = async () => {
@@ -74,9 +77,7 @@ function App() {
     cargarContactos();
   }, []);
 
-  
   // AGREGAR CONTACTO
-
 
   const onAgregarContacto = async (nuevoContacto) => {
     try {
@@ -98,9 +99,55 @@ function App() {
     }
   };
 
-  
+  // CLASE 11: INICIAR EDICIÓN
+
+  const onEditarClick = (contacto) => {
+    // Guardamos el contacto seleccionado
+    // para cargar sus datos en el formulario
+    setContactoEnEdicion(contacto);
+  };
+
+  // CLASE 11: CANCELAR EDICIÓN
+
+  const onCancelarEdicion = () => {
+    // Limpiamos el contacto en edición
+    // y el formulario vuelve al modo crear
+    setContactoEnEdicion(null);
+  };
+
+  // CLASE 11: ACTUALIZAR CONTACTO
+
+  const onActualizarContacto = async (contactoActualizado) => {
+    try {
+      setError("");
+
+      // Actualizamos el contacto en la API mediante PUT
+      const actualizado = await actualizarContacto(
+        contactoActualizado.id,
+        contactoActualizado
+      );
+
+      // Actualizamos el contacto dentro del estado local
+      setContactos((prev) =>
+        prev.map((contacto) =>
+          contacto.id === actualizado.id ? actualizado : contacto
+        )
+      );
+
+      // Salimos del modo edición
+      setContactoEnEdicion(null);
+    } catch (error) {
+      console.error("Error al actualizar contacto:", error);
+
+      setError(
+        "No se pudo actualizar el contacto. Verifica tu conexión o el estado del servidor."
+      );
+
+      throw error;
+    }
+  };
+
   // ELIMINAR CONTACTO
-  
 
   const onEliminarContacto = async (id) => {
     try {
@@ -120,9 +167,7 @@ function App() {
     }
   };
 
-
   // CLASE 10: FILTRAR CONTACTOS
-
 
   // Filtramos los contactos según el texto escrito
   const contactosFiltrados = contactos.filter((c) => {
@@ -135,7 +180,6 @@ function App() {
     const correo = (c.correo || "").toLowerCase();
     const etiqueta = (c.etiqueta || "").toLowerCase();
 
-    // MINI RETO 1:
     // Convertimos el teléfono a texto para poder buscar números
     const telefono = String(c.telefono || "");
 
@@ -149,9 +193,7 @@ function App() {
     );
   });
 
-
   // CLASE 10: ORDENAR CONTACTOS
-
 
   // Creamos una copia antes de utilizar sort()
   // para no modificar el estado original
@@ -173,9 +215,7 @@ function App() {
     return 0;
   });
 
-
   // INTERFAZ
-
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -213,12 +253,15 @@ function App() {
           </p>
         ) : (
           <>
-            {/* Formulario para agregar contactos */}
-            <FormularioContacto onAgregar={onAgregarContacto} />
+            {/* FORMULARIO PARA CREAR Y EDITAR CONTACTOS */}
+            <FormularioContacto
+              onAgregar={onAgregarContacto}
+              contactoEnEdicion={contactoEnEdicion}
+              onActualizar={onActualizarContacto}
+              onCancelarEdicion={onCancelarEdicion}
+            />
 
-         
-            {/* BUSCADOR Y BOTÓN DE ORDENAMIENTO  */}
-           
+            {/* BUSCADOR Y BOTÓN DE ORDENAMIENTO */}
 
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-2">
 
@@ -241,9 +284,7 @@ function App() {
               </button>
             </div>
 
-
-            {/* MINI RETO 2: CONTADOR DE RESULTADOS */}
-
+            {/* CONTADOR DE RESULTADOS */}
 
             <p className="text-sm text-gray-500 mb-4">
               Mostrando {contactosOrdenados.length}{" "}
@@ -251,7 +292,6 @@ function App() {
                 ? "contacto"
                 : "contactos"}
             </p>
-
 
             {/* LISTA DE CONTACTOS */}
 
@@ -279,6 +319,12 @@ function App() {
                     telefono={c.telefono}
                     correo={c.correo}
                     etiqueta={c.etiqueta}
+
+                    // Enviamos el contacto seleccionado
+                    // para iniciar el modo edición
+                    onEditar={() => onEditarClick(c)}
+
+                    // Eliminamos el contacto seleccionado
                     onEliminar={() => onEliminarContacto(c.id)}
                   />
                 ))
