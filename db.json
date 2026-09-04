@@ -8,13 +8,6 @@
       "id": "P-Sb4Z2M-c4"
     },
     {
-      "nombre": "David Rojas",
-      "telefono": "3008765432",
-      "correo": "rojas@gmail.com",
-      "etiqueta": "coordinador",
-      "id": "OZfFPfL3eqc"
-    },
-    {
       "nombre": "Juan Mendez",
       "telefono": "3247689065",
       "correo": "juan@gmail.com",
@@ -25,7 +18,7 @@
       "nombre": "Daniela Zoto",
       "telefono": "3235189876",
       "correo": "zoto@gmail.com",
-      "etiqueta": "Teacher",
+      "etiqueta": "",
       "id": "W1718gucA4o"
     },
     {
