@@ -2,10 +2,10 @@
 // Este archivo centraliza configuraciones reutilizables de la Agenda ADSO.
 // URL base del backend local de Agenda ADSO.
 // Si cambia el puerto o la ruta, solo se modifica aquí.
-export const API_BASE_URL = "http://localhost:3002/contactos";
+export const API_BASE_URL = "https://agenda-adso-api-pibq.onrender.com/contactos";
 // Información general de la aplicación que se utilizará en App.jsx
 export const APP_INFO = {
  ficha: "3412785",
- titulo: "Agenda ADSO v10",
+ titulo: "Agenda ADSO v12",
  subtitulo: "Gestión de contactos conectada a una API local con JSON Server, con validaciones y mejor experiencia de usuario.",
 };
