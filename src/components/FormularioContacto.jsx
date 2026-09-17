@@ -1,14 +1,11 @@
-// Importamos useEffect y useState para manejar estados y efectos
 import { useEffect, useState } from "react";
 
-// Componente FormularioContacto
 function FormularioContacto({
   onAgregar,
   contactoEnEdicion,
   onActualizar,
   onCancelarEdicion,
 }) {
-  // Estado principal del formulario
   const [form, setForm] = useState({
     nombre: "",
     telefono: "",
@@ -16,24 +13,21 @@ function FormularioContacto({
     etiqueta: "",
   });
 
-  // Estado para almacenar los mensajes de error
   const [errores, setErrores] = useState({
     nombre: "",
     telefono: "",
     correo: "",
   });
 
-  // Estado que indica si el formulario está enviando información
   const [enviando, setEnviando] = useState(false);
 
-  // Cuando cambia el contacto en edición, cargamos sus datos en el formulario
   useEffect(() => {
     if (contactoEnEdicion) {
       setForm({
-        nombre: contactoEnEdicion.nombre || "",
-        telefono: contactoEnEdicion.telefono || "",
-        correo: contactoEnEdicion.correo || "",
-        etiqueta: contactoEnEdicion.etiqueta || "",
+        nombre: contactoEnEdicion.nombre ?? "",
+        telefono: contactoEnEdicion.telefono ?? "",
+        correo: contactoEnEdicion.correo ?? "",
+        etiqueta: contactoEnEdicion.etiqueta ?? "",
       });
     } else {
       setForm({
@@ -44,7 +38,6 @@ function FormularioContacto({
       });
     }
 
-    // Limpiamos los errores al cambiar de modo
     setErrores({
       nombre: "",
       telefono: "",
@@ -52,7 +45,6 @@ function FormularioContacto({
     });
   }, [contactoEnEdicion]);
 
-  // Función manejadora del cambio de los inputs
   const onChange = (e) => {
     const { name, value } = e.target;
 
@@ -62,7 +54,6 @@ function FormularioContacto({
     }));
   };
 
-  // Función encargada de validar todos los campos
   function validarFormulario() {
     const nuevosErrores = {
       nombre: "",
@@ -70,17 +61,14 @@ function FormularioContacto({
       correo: "",
     };
 
-    // Validación del nombre
     if (!form.nombre.trim()) {
       nuevosErrores.nombre = "El nombre es obligatorio.";
     }
 
-    // Validación del teléfono
     if (!form.telefono.trim()) {
       nuevosErrores.telefono = "El teléfono es obligatorio.";
     }
 
-    // Validación del correo
     if (!form.correo.trim()) {
       nuevosErrores.correo = "El correo es obligatorio.";
     } else if (!form.correo.includes("@")) {
@@ -96,7 +84,6 @@ function FormularioContacto({
     );
   }
 
-  // Función manejadora del envío del formulario
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -107,17 +94,14 @@ function FormularioContacto({
     try {
       setEnviando(true);
 
-      // Si estamos editando
       if (contactoEnEdicion) {
         await onActualizar({
           ...form,
           id: contactoEnEdicion.id,
         });
       } else {
-        // Si estamos creando
         await onAgregar(form);
 
-        // Limpiamos el formulario después de crear
         setForm({
           nombre: "",
           telefono: "",
@@ -126,7 +110,6 @@ function FormularioContacto({
         });
       }
 
-      // Limpiamos los errores
       setErrores({
         nombre: "",
         telefono: "",
@@ -137,115 +120,135 @@ function FormularioContacto({
     }
   };
 
-  // JSX del formulario
+  const estiloInput =
+    "w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-800 placeholder-gray-400 outline-none transition focus:border-purple-500 focus:ring-2 focus:ring-purple-200";
+
   return (
     <form
-      className="bg-white shadow-sm rounded-2xl p-6 space-y-4 mb-8"
       onSubmit={onSubmit}
+      className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6"
     >
-      {/* Título del formulario */}
-      <h2 className="text-lg font-semibold text-gray-900 mb-2">
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">
         {contactoEnEdicion ? "Editar contacto" : "Nuevo contacto"}
       </h2>
 
-      {/* Campo Nombre */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+      {/* NOMBRE */}
+      <div className="mb-5">
+        <label
+          htmlFor="nombre"
+          className="block text-sm font-semibold text-gray-700 mb-2"
+        >
           Nombre *
         </label>
 
         <input
-          className="w-full rounded-xl border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+          id="nombre"
           name="nombre"
-          placeholder="Ej: Camila Pérez"
+          type="text"
           value={form.nombre}
           onChange={onChange}
+          placeholder="Ej: Juan Pérez"
+          className={estiloInput}
         />
 
         {errores.nombre && (
-          <p className="mt-1 text-xs text-red-600">{errores.nombre}</p>
+          <p className="text-red-500 text-sm mt-2">
+            {errores.nombre}
+          </p>
         )}
       </div>
 
-      {/* Campo Teléfono */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+      {/* TELÉFONO */}
+      <div className="mb-5">
+        <label
+          htmlFor="telefono"
+          className="block text-sm font-semibold text-gray-700 mb-2"
+        >
           Teléfono *
         </label>
 
         <input
-          className="w-full rounded-xl border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+          id="telefono"
           name="telefono"
-          placeholder="Ej: 300 123 4567"
+          type="text"
           value={form.telefono}
           onChange={onChange}
+          placeholder="Ej: 3001234567"
+          className={estiloInput}
         />
 
         {errores.telefono && (
-          <p className="mt-1 text-xs text-red-600">{errores.telefono}</p>
+          <p className="text-red-500 text-sm mt-2">
+            {errores.telefono}
+          </p>
         )}
       </div>
 
-      {/* Campo Correo */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+      {/* CORREO */}
+      <div className="mb-5">
+        <label
+          htmlFor="correo"
+          className="block text-sm font-semibold text-gray-700 mb-2"
+        >
           Correo *
         </label>
 
         <input
-          className="w-full rounded-xl border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+          id="correo"
           name="correo"
-          placeholder="Ej: camila@sena.edu.co"
+          type="email"
           value={form.correo}
           onChange={onChange}
+          placeholder="Ej: correo@gmail.com"
+          className={estiloInput}
         />
 
         {errores.correo && (
-          <p className="mt-1 text-xs text-red-600">{errores.correo}</p>
+          <p className="text-red-500 text-sm mt-2">
+            {errores.correo}
+          </p>
         )}
       </div>
 
-      {/* Campo Etiqueta */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+      {/* ETIQUETA */}
+      <div className="mb-7">
+        <label
+          htmlFor="etiqueta"
+          className="block text-sm font-semibold text-gray-700 mb-2"
+        >
           Etiqueta (opcional)
         </label>
 
         <input
-          className="w-full rounded-xl border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+          id="etiqueta"
           name="etiqueta"
-          placeholder="Ej: Trabajo"
+          type="text"
           value={form.etiqueta}
           onChange={onChange}
+          placeholder="Ej: amigo, trabajo, profesor..."
+          className={estiloInput}
         />
       </div>
 
-      {/* Botones */}
-      <div className="pt-2 flex gap-3 flex-wrap">
-        {/* Botón principal */}
+      {/* BOTONES */}
+      <div className="flex flex-wrap gap-3">
         <button
           type="submit"
           disabled={enviando}
-          className="w-full md:w-auto bg-purple-600 hover:bg-purple-700
-                     disabled:bg-purple-300 disabled:cursor-not-allowed
-                     text-white px-6 py-3 rounded-xl font-semibold shadow-sm"
+          className="bg-purple-600 hover:bg-purple-700 disabled:bg-purple-300 text-white px-7 py-3 rounded-xl font-semibold transition"
         >
           {enviando
             ? "Guardando..."
             : contactoEnEdicion
-              ? "Guardar cambios"
-              : "Agregar contacto"}
+            ? "Guardar cambios"
+            : "Agregar contacto"}
         </button>
 
-        {/* Botón cancelar, solo aparece al editar */}
         {contactoEnEdicion && (
           <button
             type="button"
             onClick={onCancelarEdicion}
-            disabled={enviando}
-            className="w-full md:w-auto bg-gray-100 hover:bg-gray-200
-                       disabled:opacity-50 disabled:cursor-not-allowed
-                       text-gray-700 px-6 py-3 rounded-xl font-semibold"
+            className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-7 py-3 rounded-xl font-semibold transition"
           >
             Cancelar edición
           </button>
@@ -255,5 +258,4 @@ function FormularioContacto({
   );
 }
 
-// Exportamos el componente
 export default FormularioContacto;

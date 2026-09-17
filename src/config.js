@@ -6,6 +6,6 @@ export const API_BASE_URL = "https://agenda-adso-api-pibq.onrender.com/contactos
 // Información general de la aplicación que se utilizará en App.jsx
 export const APP_INFO = {
  ficha: "3412785",
- titulo: "Agenda ADSO v12",
+ titulo: "Agenda ADSO v13",
  subtitulo: "Gestión de contactos conectada a una API local con JSON Server, con validaciones y mejor experiencia de usuario.",
 };
